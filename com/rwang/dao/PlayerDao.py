@@ -12,7 +12,27 @@ from com.rwang.model import Player
 
 conn = DBUtil.getConnection()
 with conn:
-
+    """
+    add player to database
+    """
+    def addPlayer(player):
+        cursor = conn.cursor()
+        sql = "INSERT INTO player" \
+              + "(player_name, player_email, is_online)" \
+              + "VALUES(%s, %s, %s)"
+        try:
+            cursor.execute(sql, (getattr(player, "__player_name"),
+                                 getattr(player, "__player_email"),
+                                 getattr(player, "__is_online")))
+            conn.commit()
+            flag = 1
+        except Exception as e:
+            print e
+            flag = 0
+            conn.rollback()
+        cursor.close()
+        return flag
+        # conn.close()
     """
     update player in database
     """
@@ -48,7 +68,23 @@ with conn:
             flag = 0
         cursor.close()
         return flag
-
+    """
+    query all the information of the players in the database
+    """
+    def queryAll():
+        cursor = conn.cursor()
+        sql = "SELECT * FROM player"
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+        cursor.close()
+        # conn.close()
+        res = []
+        for row in rows:
+            resList = []
+            for i in range(len(row)):
+                resList.append(row[i])
+            res.append(resList)
+        return res
 
     """
     get an information of a specific player according to his id
@@ -67,6 +103,25 @@ with conn:
         for i in range(len(row)):
             res.append(row[i])
         return res
+    """
+    search the information of players according to his player_name and email
+    """
+    def query(player_name, player_email):
+        cursor = conn.cursor()
+        sql = " SELECT * FROM player " \
+              + " WHERE player_name LIKE %s and player_email LIKE %s "
+        cursor.execute(sql, ("%" + player_name + "%", "%" + player_email + "%"))
+        rows = cursor.fetchall()
+        cursor.close()
+        # conn.close()
+        res = []
+        for row in rows:
+            resList = []
+            for i in range(len(row)):
+                resList.append(row[i])
+            res.append(resList)
+        return res
+        pass
 
 
     """
