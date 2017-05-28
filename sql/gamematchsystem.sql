@@ -1,0 +1,25 @@
+DROP TABLE IF EXISTS `player`;
+CREATE TABLE `player` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `player_name` varchar(30) NOT NULL,
+  `player_email` varchar(40) UNIQUE NOT NULL,
+  `is_online` TINYINT(4) DEFAULT 0 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `performance`;
+CREATE TABLE `performance` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `num_win` INT(11) DEFAULT 0 NOT NULL,
+  `num_lose` INT(11) DEFAULT 0 NOT NULL,
+  `score` INT(11) DEFAULT 1000 NOT NULL,
+  `league` TINYINT(2) DEFAULT 1 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `league`;
+CREATE TABLE `league` (
+  `id` INT(2) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
