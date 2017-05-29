@@ -68,6 +68,16 @@ with conn:
     input: [[player1, group1], [player2, group1], [player3, group2], [player4, group2]]
     output: gameResults = [[player1, 1], [player2, 1], [player3, 0], [player4, 0]]
     """
+    def genGameResults(playerGroup):
+            gameResults = playerGroup
+            randNum = random.randint(0, 1)
+            for player in gameResults:
+                if player[1] == "group1":
+                    player[1] = randNum
+                elif player[1] == "group2":
+                    player[1] = 1 - randNum
+            return gameResults
+            pass
 
     """
     change the performance of players according to the game results
@@ -112,7 +122,21 @@ with conn:
     """
     query all the information of the players' performance in the database
     """
-
+    def queryAllPerformance():
+        cursor = conn.cursor()
+        sql = "SELECT * FROM performance"
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+        cursor.close()
+        # conn.close()
+        res = []
+        for row in rows:
+            resList = []
+            for i in range(len(row)):
+                resList.append(row[i])
+            res.append(resList)
+        return res
+    
     """
     query the league according to player_id
     """
@@ -166,11 +190,35 @@ with conn:
     """
     delete the performance of the player by player_id
     """
+    def delPerformance(player_id):
+        cursor = conn.cursor()
+        sql = " DELETE FROM performance " \
+              + " WHERE id = %s "
+        try:
+            cursor.execute(sql, (player_id,))
+            conn.commit()
+        except Exception as e:
+            print e
+            conn.rollback()
+        cursor.close()
+        pass
 
     """
     query the score of the selected player_id
     """
-
+    def getScore(id_list):
+        scores = []
+        cursor = conn.cursor()
+        for player_id in id_list:
+            sql = " SELECT score FROM performance " \
+                  + " WHERE id = %s "
+            cursor.execute(sql, (player_id, ))
+            score = cursor.fetchone()
+            scores.append(score[0])
+        cursor.close()
+        return scores
+        pass
+    
     """
     backpack test
     """
@@ -299,11 +347,28 @@ with conn:
     """
     group all 1v1 players according to their scores
     """
-
+    def gameMatch1v1(playerInfo):
+        sol = Solution()
+        res = sol.group1v1(playerInfo)
+        playerGroup = res
+        for i in range(0, len(playerGroup), 2):
+            playerGroup[i][1] = 'group' + str(i / 2 + 1)
+            playerGroup[i + 1][1] = 'group' + str(i / 2 + 1)
+            pass
+        return playerGroup
+        pass
+    
     """
     show group results of 1v1 matching
     """
-
+    def showGroup1v1(playerGroup):
+        print "================================================================"
+        print " After group :"
+        for i in range(0, len(playerGroup), 2):
+            print " Group " + str(i / 2 + 1) + ": "
+            print " player " + str(playerGroup[i][0]) + " vs " + " player " + str(playerGroup[i + 1][0])
+        pass
+    
     """
     generate gameResults according to the matched playerGroup
     input: [[player1, group1], [player2, group1], [player3, group2], [player4, group2]]
@@ -515,15 +580,93 @@ with conn:
     """
     group all 4v4 players according to their scores
     """
+    def gameMatch4v4(playerInfo):
+        sol = Solution()
+        res = sol.group1v1(playerInfo)
+        playerInfo = res
+        playerGroup = []
+        for i in range(0, len(playerInfo), 8):
+            pI = playerInfo[i: i + 8]
+            pG = gameMatching(pI)
+            playerGroup.append(pG)
+            pass
+        return playerGroup
+        pass
 
     """
     show group results of 4v4 matching
     """
+    def showGroup4v4(playerGroup):
+        print "================================================================"
+        print " After group :"
+        for i in range(0, len(playerGroup), 1):
+            print " Group " + str(i + 1) + ": "
+            group = playerGroup[i]
+            groupLeft = []
+            groupRight = []
+            for i in range(len(group)):
+                if group[i][1] == "group1":
+                    groupLeft.append(group[i][0])
+                else:
+                    groupRight.append(group[i][0])
+            print " player " + str(groupLeft[0]) + " + " \
+                  " player " + str(groupLeft[1]) + " + " \
+                  " player " + str(groupLeft[2]) + " + " \
+                  " player " + str(groupLeft[3]) + \
+                  " vs " + \
+                  " player " + str(groupRight[0]) + " + " \
+                  " player " + str(groupRight[1]) + " + " \
+                  " player " + str(groupRight[2]) + " + " \
+                  " player " + str(groupRight[3])
+            pass
 
     """
     show the 4v4 game results of each group
     input: gameResults = [[player1, 1], [player2, 0], [player3, 0], [player4, 1]]
     """
+     def show4v4GameRes(groupRes, playerGroup):
+        print "================================================================"
+        print " The game is over !!! The result of this game : "
+        for i in range(0, len(playerGroup), 1):
+            print " Group " + str(i + 1) + ": "
+            group = playerGroup[i]
+            groupLeft = []
+            groupRight = []
+            for j in range(len(group)):
+                if group[j][1] == "group1":
+                    groupLeft.append(group[j][0])
+                else:
+                    groupRight.append(group[j][0])
+            if groupRes[i] == 1:
+                print " player " + str(groupLeft[0]) + " + " \
+                      " player " + str(groupLeft[1]) + " + " \
+                      " player " + str(groupLeft[2]) + " + " \
+                      " player " + str(groupLeft[3]) + \
+                      " win !!!"
+                print " player " + str(groupRight[0]) + " + " \
+                      " player " + str(groupRight[1]) + " + " \
+                      " player " + str(groupRight[2]) + " + " \
+                      " player " + str(groupRight[3]) + \
+                      " lose !!!"
+            else:
+                print " player " + str(groupLeft[0]) + " + " \
+                      " player " + str(groupLeft[1]) + " + " \
+                      " player " + str(groupLeft[2]) + " + " \
+                      " player " + str(groupLeft[3]) + \
+                      " lose !!!"
+                print " player " + str(groupRight[0]) + " + " \
+                      " player " + str(groupRight[1]) + " + " \
+                      " player " + str(groupRight[2]) + " + " \
+                      " player " + str(groupRight[3]) + \
+                      " win !!!"
+
+
+
+
+
+
+
+
 
 
 
