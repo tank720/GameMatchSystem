@@ -210,7 +210,7 @@ while 1:
         GameAction.start3v3Game(int(numberOfPlayer))
         pass
     elif OPERATION_FOUR == command.upper():
-       print "You are selecting players to play the 4v4 game !!!"
+        print "You are selecting players to play the 4v4 game !!!"
         numberOfPlayer = raw_input(" Please input the number of the players (must be a multiple of 8): ")
         upBound = len(PlayerDao.queryOnline())
         if int(numberOfPlayer) % 8 != 0:
