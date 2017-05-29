@@ -624,41 +624,41 @@ with conn:
     show the 4v4 game results of each group
     input: gameResults = [[player1, 1], [player2, 0], [player3, 0], [player4, 1]]
     """
-     def show4v4GameRes(groupRes, playerGroup):
-        print "================================================================"
-        print " The game is over !!! The result of this game : "
-        for i in range(0, len(playerGroup), 1):
-            print " Group " + str(i + 1) + ": "
-            group = playerGroup[i]
-            groupLeft = []
-            groupRight = []
-            for j in range(len(group)):
-                if group[j][1] == "group1":
-                    groupLeft.append(group[j][0])
+    def show4v4GameRes(groupRes, playerGroup):
+            print "================================================================"
+            print " The game is over !!! The result of this game : "
+            for i in range(0, len(playerGroup), 1):
+                print " Group " + str(i + 1) + ": "
+                group = playerGroup[i]
+                groupLeft = []
+                groupRight = []
+                for j in range(len(group)):
+                    if group[j][1] == "group1":
+                        groupLeft.append(group[j][0])
+                    else:
+                        groupRight.append(group[j][0])
+                if groupRes[i] == 1:
+                    print " player " + str(groupLeft[0]) + " + " \
+                          " player " + str(groupLeft[1]) + " + " \
+                          " player " + str(groupLeft[2]) + " + " \
+                          " player " + str(groupLeft[3]) + \
+                          " win !!!"
+                    print " player " + str(groupRight[0]) + " + " \
+                          " player " + str(groupRight[1]) + " + " \
+                          " player " + str(groupRight[2]) + " + " \
+                          " player " + str(groupRight[3]) + \
+                          " lose !!!"
                 else:
-                    groupRight.append(group[j][0])
-            if groupRes[i] == 1:
-                print " player " + str(groupLeft[0]) + " + " \
-                      " player " + str(groupLeft[1]) + " + " \
-                      " player " + str(groupLeft[2]) + " + " \
-                      " player " + str(groupLeft[3]) + \
-                      " win !!!"
-                print " player " + str(groupRight[0]) + " + " \
-                      " player " + str(groupRight[1]) + " + " \
-                      " player " + str(groupRight[2]) + " + " \
-                      " player " + str(groupRight[3]) + \
-                      " lose !!!"
-            else:
-                print " player " + str(groupLeft[0]) + " + " \
-                      " player " + str(groupLeft[1]) + " + " \
-                      " player " + str(groupLeft[2]) + " + " \
-                      " player " + str(groupLeft[3]) + \
-                      " lose !!!"
-                print " player " + str(groupRight[0]) + " + " \
-                      " player " + str(groupRight[1]) + " + " \
-                      " player " + str(groupRight[2]) + " + " \
-                      " player " + str(groupRight[3]) + \
-                      " win !!!"
+                    print " player " + str(groupLeft[0]) + " + " \
+                          " player " + str(groupLeft[1]) + " + " \
+                          " player " + str(groupLeft[2]) + " + " \
+                          " player " + str(groupLeft[3]) + \
+                          " lose !!!"
+                    print " player " + str(groupRight[0]) + " + " \
+                          " player " + str(groupRight[1]) + " + " \
+                          " player " + str(groupRight[2]) + " + " \
+                          " player " + str(groupRight[3]) + \
+                          " win !!!"
 
 
 
