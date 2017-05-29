@@ -73,6 +73,18 @@ start 3v3 game
 
 
 def start3v3Game(num_player):
+    playerInfo = GameDao.selectPlayers(num_player)
+    print "================================================================"
+    print " The following players are going to play the 3v3 game: "
+    GameDao.showInfoAfterGame(playerInfo)
+    playerGroup = GameDao.gameMatch3v3(playerInfo)
+    GameDao.showGroup3v3(playerGroup)
+    gameResults, groupRes = GameDao.genGame2v2Results(playerGroup)
+    GameDao.show3v3GameRes(groupRes, playerGroup)
+    GameDao.upDatePerformance(gameResults)
+    print "================================================================"
+    print " The Info of the players after the game: "
+    GameDao.showInfoAfterGame(playerInfo)
     pass
 
 """
@@ -81,6 +93,18 @@ start 4v4 game
 
 
 def start4v4Game(num_player):
+    playerInfo = GameDao.selectPlayers(num_player)
+    print "================================================================"
+    print " The following players are going to play the 4v4 game: "
+    GameDao.showInfoAfterGame(playerInfo)
+    playerGroup = GameDao.gameMatch4v4(playerInfo)
+    GameDao.showGroup4v4(playerGroup)
+    gameResults, groupRes = GameDao.genGame2v2Results(playerGroup)
+    GameDao.show4v4GameRes(groupRes, playerGroup)
+    GameDao.upDatePerformance(gameResults)
+    print "================================================================"
+    print " The Info of the players after the game: "
+    GameDao.showInfoAfterGame(playerInfo)
     pass
 
 
