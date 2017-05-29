@@ -197,8 +197,30 @@ while 1:
         # print numberOfPlayer
         GameAction.start2v2Game(int(numberOfPlayer))
     elif OPERATION_THREE == command.upper():
+        print "You are selecting players to play the 3v3 game !!!"
+        numberOfPlayer = raw_input(" Please input the number of the players (must be a multiple of 6): ")
+        upBound = len(PlayerDao.queryOnline())
+        if int(numberOfPlayer) % 6 != 0:
+            print "The input number is not a multiple of 6 !!!"
+            continue
+        if int(numberOfPlayer) > upBound:
+            print " The number of players playing game exceeds the total number of online players !!!"
+            continue
+        # print numberOfPlayer
+        GameAction.start3v3Game(int(numberOfPlayer))
         pass
     elif OPERATION_FOUR == command.upper():
+       print "You are selecting players to play the 4v4 game !!!"
+        numberOfPlayer = raw_input(" Please input the number of the players (must be a multiple of 8): ")
+        upBound = len(PlayerDao.queryOnline())
+        if int(numberOfPlayer) % 8 != 0:
+            print "The input number is not a multiple of 8 !!!"
+            continue
+        if int(numberOfPlayer) > upBound:
+            print " The number of players playing game exceeds the total number of online players !!!"
+            continue
+        # print numberOfPlayer
+        GameAction.start4v4Game(int(numberOfPlayer))         
         pass
     elif OPERATION_RANDOMADD == command.upper() or OPERATION_RANDOMADD[0] == command.upper():
         print "You are randomly add players to the databases !!!"
